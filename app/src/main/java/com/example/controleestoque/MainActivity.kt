@@ -13,21 +13,24 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -86,6 +89,8 @@ private data class Product(
     val name: String,
     val sku: String,
     val quantity: Int,
+    val minQuantity: Int,
+    val maxQuantity: Int,
     val unitPrice: Double
 )
 
@@ -205,9 +210,9 @@ private fun InventoryHome(onLogout: () -> Unit) {
     var nextMovementId by remember { mutableIntStateOf(4) }
     val products = remember {
         mutableStateListOf(
-            Product(1, "Notebook Dell", "NTB-001", 8, 3450.0),
-            Product(2, "Mouse sem fio", "MOU-014", 35, 89.9),
-            Product(3, "Teclado mecanico", "TEC-022", 16, 249.9)
+            Product(1, "Notebook Dell", "NTB-001", 8, 5, 20, 3450.0),
+            Product(2, "Mouse sem fio", "MOU-014", 35, 10, 80, 89.9),
+            Product(3, "Teclado mecanico", "TEC-022", 16, 8, 40, 249.9)
         )
     }
     val movements = remember {
@@ -321,6 +326,8 @@ private fun DashboardScreen(
     val totalProducts = products.size
     val totalItems = products.sumOf { it.quantity }
     val totalValue = products.sumOf { it.quantity * it.unitPrice }
+    val lowStockProducts = products.filter { it.quantity <= it.minQuantity }
+    val sortedMovements = movements.sortedByDescending { it.createdAt }
 
     LazyColumn(
         modifier = Modifier
@@ -338,15 +345,36 @@ private fun DashboardScreen(
         item {
             SummaryCard("Valor total em estoque", money(totalValue))
         }
+        if (lowStockProducts.isNotEmpty()) {
+            item {
+                Text(
+                    text = "Alertas de estoque minimo",
+                    modifier = Modifier.padding(top = 8.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            items(lowStockProducts) { product ->
+                LowStockCard(product)
+            }
+        }
         item {
             Text(
-                text = "Ultimas movimentacoes",
+                text = "Movimentacoes",
                 modifier = Modifier.padding(top = 8.dp),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
         }
-        items(movements.sortedByDescending { it.createdAt }.take(5)) { movement ->
+        if (sortedMovements.isEmpty()) {
+            item {
+                Text(
+                    text = "Nenhuma movimentacao registrada.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        items(sortedMovements) { movement ->
             MovementRow(movement)
         }
     }
@@ -365,6 +393,30 @@ private fun SummaryCard(title: String, value: String) {
                 text = value,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+private fun LowStockCard(product: Product) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF4E5))
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = product.name,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF8A4B00)
+            )
+            Text(
+                text = "Estoque atual: ${product.quantity} | minimo: ${product.minQuantity}",
+                color = Color(0xFF8A4B00)
             )
         }
     }
@@ -442,6 +494,8 @@ private fun ProductCard(product: Product, onEdit: () -> Unit) {
             }
             Text("SKU: ${product.sku}", color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text("Quantidade: ${product.quantity}")
+            Text("Estoque minimo: ${product.minQuantity}")
+            Text("Estoque maximo: ${product.maxQuantity}")
             Text("Valor unitario: ${money(product.unitPrice)}")
         }
     }
@@ -456,6 +510,8 @@ private fun ProductDialog(
     var name by remember(product) { mutableStateOf(product?.name.orEmpty()) }
     var sku by remember(product) { mutableStateOf(product?.sku.orEmpty()) }
     var quantity by remember(product) { mutableStateOf(product?.quantity?.toString().orEmpty()) }
+    var minQuantity by remember(product) { mutableStateOf(product?.minQuantity?.toString().orEmpty()) }
+    var maxQuantity by remember(product) { mutableStateOf(product?.maxQuantity?.toString().orEmpty()) }
     var price by remember(product) { mutableStateOf(product?.unitPrice?.toString().orEmpty()) }
     var error by remember { mutableStateOf<String?>(null) }
 
@@ -463,7 +519,12 @@ private fun ProductDialog(
         onDismissRequest = onDismiss,
         title = { Text(if (product == null) "Novo produto" else "Editar produto") },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(
+                modifier = Modifier
+                    .heightIn(max = 480.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
@@ -483,6 +544,24 @@ private fun ProductDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true
                 )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = minQuantity,
+                        onValueChange = { minQuantity = it.onlyDigits() },
+                        modifier = Modifier.weight(1f),
+                        label = { Text("Minimo") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        singleLine = true
+                    )
+                    OutlinedTextField(
+                        value = maxQuantity,
+                        onValueChange = { maxQuantity = it.onlyDigits() },
+                        modifier = Modifier.weight(1f),
+                        label = { Text("Maximo") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        singleLine = true
+                    )
+                }
                 OutlinedTextField(
                     value = price,
                     onValueChange = { price = it.replace(',', '.') },
@@ -497,19 +576,33 @@ private fun ProductDialog(
             Button(
                 onClick = {
                     val parsedQuantity = quantity.toIntOrNull()
+                    val parsedMinQuantity = minQuantity.toIntOrNull()
+                    val parsedMaxQuantity = maxQuantity.toIntOrNull()
                     val parsedPrice = price.toDoubleOrNull()
-                    if (name.isBlank() || sku.isBlank() || parsedQuantity == null || parsedPrice == null) {
-                        error = "Preencha todos os campos corretamente."
-                    } else {
-                        onSave(
-                            Product(
-                                id = product?.id ?: 0,
-                                name = name.trim(),
-                                sku = sku.trim(),
-                                quantity = parsedQuantity,
-                                unitPrice = parsedPrice
+                    when {
+                        name.isBlank() || sku.isBlank() || parsedQuantity == null ||
+                            parsedMinQuantity == null || parsedMaxQuantity == null || parsedPrice == null -> {
+                            error = "Preencha todos os campos corretamente."
+                        }
+                        parsedMinQuantity > parsedMaxQuantity -> {
+                            error = "O minimo nao pode ser maior que o maximo."
+                        }
+                        parsedQuantity > parsedMaxQuantity -> {
+                            error = "A quantidade atual nao pode passar do maximo."
+                        }
+                        else -> {
+                            onSave(
+                                Product(
+                                    id = product?.id ?: 0,
+                                    name = name.trim(),
+                                    sku = sku.trim(),
+                                    quantity = parsedQuantity,
+                                    minQuantity = parsedMinQuantity,
+                                    maxQuantity = parsedMaxQuantity,
+                                    unitPrice = parsedPrice
+                                )
                             )
-                        )
+                        }
                     }
                 }
             ) {
@@ -581,7 +674,12 @@ private fun MovementDialog(
         onDismissRequest = onDismiss,
         title = { Text("Nova movimentacao") },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(
+                modifier = Modifier
+                    .heightIn(max = 480.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Text("Produto")
                 products.forEach { product ->
                     OutlinedButton(
@@ -591,7 +689,7 @@ private fun MovementDialog(
                         Text(if (selectedProduct.id == product.id) "${product.name} selecionado" else product.name)
                     }
                 }
-                Divider()
+                HorizontalDivider()
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MovementType.entries.forEach { movementType ->
                         if (type == movementType) {
@@ -629,6 +727,9 @@ private fun MovementDialog(
                         }
                         type == MovementType.Exit && parsedQuantity > selectedProduct.quantity -> {
                             error = "Saida maior que o estoque disponivel."
+                        }
+                        type == MovementType.Entry && selectedProduct.quantity + parsedQuantity > selectedProduct.maxQuantity -> {
+                            error = "Entrada ultrapassa o estoque maximo."
                         }
                         else -> onSave(selectedProduct, type, parsedQuantity)
                     }
