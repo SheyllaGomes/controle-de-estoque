@@ -31,6 +31,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -259,8 +260,8 @@ private fun InventoryHome(onLogout: () -> Unit) {
                 CenterAlignedTopAppBar(
                     title = { Text(selectedScreen.label) },
                     navigationIcon = {
-                        TextButton(onClick = { scope.launch { drawerState.open() } }) {
-                            Text("Menu")
+                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                            HamburgerIcon()
                         }
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -313,6 +314,23 @@ private fun InventoryHome(onLogout: () -> Unit) {
                     }
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun HamburgerIcon() {
+    Column(
+        modifier = Modifier.width(24.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        repeat(3) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(2.dp)
+                    .background(Color.White, RoundedCornerShape(1.dp))
+            )
         }
     }
 }
