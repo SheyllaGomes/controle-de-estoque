@@ -594,11 +594,14 @@ private fun MovementDialog(
                 Divider()
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MovementType.entries.forEach { movementType ->
-                        Button(
-                            onClick = { type = movementType },
-                            enabled = type != movementType
-                        ) {
-                            Text(movementType.label)
+                        if (type == movementType) {
+                            Button(onClick = { type = movementType }) {
+                                Text(movementType.label)
+                            }
+                        } else {
+                            OutlinedButton(onClick = { type = movementType }) {
+                                Text(movementType.label)
+                            }
                         }
                     }
                 }
