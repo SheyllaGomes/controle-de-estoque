@@ -3,33 +3,332 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estoque | Controle inteligente</title>
+  <meta name="theme-color" content="#5b5cf0" />
+  <title>Estoque.io | Gestão inteligente</title>
   <style>
-    :root { --ink:#172039; --muted:#69758d; --line:#e9edf5; --surface:#fff; --canvas:#f7f9fd; --brand:#5b54f7; --brand-2:#857cff; --green:#18ae74; --red:#ec5970; --amber:#ffb547; }
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--canvas)} button,input,select{font:inherit} button{border:0;cursor:pointer}
-    .login{min-height:100vh;display:grid;grid-template-columns:1.15fr .85fr;background:#fff}.login-visual{padding:52px 8vw;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(145deg,#252056 0%,#5148cb 58%,#8178ff 100%);color:#fff;position:relative;overflow:hidden}.login-visual:after{content:"";position:absolute;width:500px;height:500px;border:1px solid rgba(255,255,255,.15);border-radius:50%;right:-180px;top:80px;box-shadow:0 0 0 70px rgba(255,255,255,.04),0 0 0 140px rgba(255,255,255,.03)}.brand{display:flex;gap:12px;align-items:center;font-weight:800;letter-spacing:-.5px;position:relative;z-index:1}.brand-mark{width:38px;height:38px;border-radius:12px;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:900;box-shadow:0 10px 20px #0002}.login-copy{max-width:520px;position:relative;z-index:1}.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:#bcb8ff}.login-copy h1{font-size:clamp(36px,4.2vw,64px);line-height:1.05;letter-spacing:-2.4px;margin:16px 0}.login-copy p{font-size:17px;line-height:1.65;color:#dddafe;max-width:400px}.mini-stats{display:flex;gap:28px;font-size:13px;color:#dedcff;position:relative;z-index:1}.mini-stats b{font-size:22px;display:block;color:#fff}.login-form{display:flex;justify-content:center;align-items:center;padding:32px}.form-card{width:min(410px,100%)}.form-card h2{font-size:30px;letter-spacing:-1px;margin:0 0 8px}.form-card>p{color:var(--muted);line-height:1.55;margin:0 0 34px}.field{display:grid;gap:8px;margin:16px 0}.field label{font-size:13px;font-weight:700}.field input{height:52px;border:1px solid #dde3ee;border-radius:12px;padding:0 15px;outline:none;transition:.2s}.field input:focus{border-color:var(--brand);box-shadow:0 0 0 4px #5b54f715}.primary{background:var(--brand);color:#fff;height:52px;border-radius:12px;font-weight:800;width:100%;margin-top:10px;box-shadow:0 12px 22px #5b54f734;transition:.2s}.primary:hover{transform:translateY(-1px);background:#4d46e9}.hint{margin-top:20px;padding:12px 14px;border-radius:10px;background:#f4f5ff;color:#56519f;font-size:13px}.hint b{color:#39347c}
-    .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:#fff;border-right:1px solid var(--line);padding:26px 16px;display:flex;flex-direction:column}.side .brand{color:var(--ink);padding:0 8px 36px}.side .brand-mark{background:var(--brand);color:white}.nav{display:grid;gap:6px}.nav button{background:transparent;color:#68758c;text-align:left;padding:12px 13px;border-radius:10px;font-size:14px;font-weight:700;display:flex;gap:12px;align-items:center}.nav button:hover,.nav button.active{background:#f0efff;color:#4e47de}.nav .ico{width:19px;text-align:center;font-size:16px}.side-bottom{margin-top:auto;padding:20px 9px 0;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ffcf9d,#db7194);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}.who{font-size:12px;color:var(--muted)}.who b{display:block;color:var(--ink);font-size:13px}
-    main{padding:30px 38px 42px;max-width:1550px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:31px}.top h1{font-size:26px;letter-spacing:-1px;margin:0 0 5px}.top p{margin:0;color:var(--muted);font-size:14px}.actions{display:flex;gap:11px;align-items:center}.bell{width:42px;height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;font-size:17px;position:relative}.bell:after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--red);top:9px;right:10px;border:2px solid #fff}.new{height:42px;border-radius:12px;background:var(--brand);color:#fff;padding:0 17px;font-weight:750;box-shadow:0 9px 18px #5b54f724}.dashboard{display:grid;gap:25px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.metric,.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px #26355808}.metric{padding:19px}.metric-top{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;font-weight:650}.metric-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px}.purple{background:#efeeff;color:var(--brand)}.blue{background:#e9f5ff;color:#328fd0}.orange{background:#fff3df;color:#f59c1a}.pink{background:#ffedf1;color:#df5471}.metric strong{display:block;font-size:25px;letter-spacing:-1px;margin:15px 0 7px}.trend{font-size:12px;color:var(--muted)}.trend b{color:var(--green)}.content-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px}.panel{padding:22px}.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.panel h3{margin:0;font-size:16px;letter-spacing:-.3px}.panel-head span{font-size:12px;color:var(--muted)}.select{border:1px solid var(--line);border-radius:8px;background:white;padding:7px;color:var(--muted);font-size:12px}.chart{height:225px;display:flex;align-items:flex-end;gap:17px;padding:10px 4px 0;border-bottom:1px solid var(--line)}.bar-wrap{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:9px}.bar{width:100%;max-width:42px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,var(--brand-2),var(--brand));min-height:16px;position:relative}.bar:hover:before{content:attr(data-value);position:absolute;top:-29px;left:50%;transform:translateX(-50%);background:#222a42;color:white;padding:4px 6px;border-radius:5px;font-size:10px;white-space:nowrap}.bar-wrap small{font-size:11px;color:var(--muted)}.stock-list{display:grid;gap:14px}.stock{display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:11px}.product-icon{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:#f5f6fb;font-size:20px}.stock-name b,.activity b{font-size:13px;display:block}.stock-name span,.activity span{font-size:11px;color:var(--muted)}.progress{height:5px;background:#eef0f6;border-radius:6px;margin-top:8px;overflow:hidden}.progress i{display:block;height:100%;background:var(--brand);border-radius:inherit}.stock-qtd{font-size:12px;text-align:right;font-weight:750}.stock-qtd span{display:block;color:var(--muted);font-weight:500;font-size:10px}.bottom-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px}.activity-list{display:grid;gap:14px}.activity{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center}.activity-ico{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:14px}.in{background:#e8fbf2;color:var(--green)}.out{background:#ffedf0;color:var(--red)}.movement{font-size:12px;font-weight:800}.movement.in{background:none}.movement.out{background:none}.low-list{display:grid;gap:13px}.low{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.low:last-child{border:0}.tag{font-size:10px;font-weight:800;border-radius:999px;padding:5px 8px}.critical{background:#ffedf0;color:var(--red)}.attention{background:#fff4df;color:#d78a0b}.link{font-size:12px;font-weight:750;color:var(--brand);background:none;padding:0}
-    .view{display:none}.view.show{display:block}.table-panel{padding:0;overflow:hidden}.table-toolbar{padding:20px;display:flex;gap:13px;justify-content:space-between;border-bottom:1px solid var(--line)}.search{width:280px;max-width:65%;height:39px;border:1px solid var(--line);border-radius:9px;padding:0 12px;outline:none}.filter{border:1px solid var(--line);background:white;border-radius:9px;padding:0 12px;color:var(--muted)}table{border-collapse:collapse;width:100%;font-size:13px}th{text-align:left;background:#fafbfe;padding:13px 20px;color:#7d879b;font-size:11px;text-transform:uppercase;letter-spacing:.5px}td{padding:15px 20px;border-top:1px solid var(--line)}.status{font-size:11px;font-weight:750;padding:5px 9px;border-radius:20px;background:#e8fbf2;color:#159564}.status.low{background:#fff4df;color:#d78a0b}.product-cell{display:flex;align-items:center;gap:10px}.product-cell .product-icon{width:31px;height:31px;font-size:15px;border-radius:8px}.modal{display:none;position:fixed;inset:0;background:#12152a75;z-index:5;place-items:center;padding:16px}.modal.open{display:grid}.modal-card{width:min(480px,100%);background:white;border-radius:18px;padding:25px;box-shadow:0 20px 60px #11142c55}.modal-title{display:flex;align-items:center;justify-content:space-between}.modal-title h2{font-size:20px;margin:0}.close{background:#f3f4fa;width:33px;height:33px;border-radius:9px;color:#68758c}.modal-card .primary{margin-top:16px}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:980px){.login{grid-template-columns:1fr}.login-visual{min-height:360px}.app{grid-template-columns:76px 1fr}.side{padding:24px 11px}.side .brand{padding:0 0 30px;justify-content:center}.brand-name,.nav span:not(.ico),.side-bottom .who{display:none}.nav button{justify-content:center;padding:13px}.side-bottom{justify-content:center}.metrics{grid-template-columns:repeat(2,1fr)}.content-grid,.bottom-grid{grid-template-columns:1fr}main{padding:26px 22px}}@media(max-width:600px){.login-visual{padding:32px;min-height:310px}.login-copy h1{font-size:38px}.mini-stats{gap:16px}.app{display:block}.side{position:sticky;top:0;z-index:3;height:65px;display:flex;flex-direction:row;padding:10px;border-bottom:1px solid var(--line)}.side .brand{padding:0;flex:1;justify-content:flex-start}.nav{display:flex;gap:2px}.nav button{padding:9px}.nav button:nth-child(n+5){display:none}.side-bottom{display:none}main{padding:23px 16px}.top{align-items:flex-start}.top p{display:none}.new{font-size:0;width:42px;padding:0}.new:after{content:"+";font-size:20px}.metrics{grid-template-columns:1fr 1fr;gap:10px}.metric{padding:14px}.metric strong{font-size:21px}.content-grid,.bottom-grid{gap:12px}.panel{padding:17px}.chart{gap:8px}.table-toolbar{padding:13px}.search{width:100%;max-width:100%}.filter{display:none}th:nth-child(3),td:nth-child(3),th:nth-child(5),td:nth-child(5){display:none}}
+    :root{
+      --ink:#101828;--muted:#667085;--line:#e7eaf0;--surface:#fff;--canvas:#f5f7fb;
+      --brand:#5b5cf0;--brand-dark:#4748d7;--brand-soft:#eef0ff;--green:#12a874;
+      --green-soft:#eafaf4;--red:#e65064;--red-soft:#fff0f2;--amber:#f59e0b;
+      --amber-soft:#fff7e6;--blue:#4388e8;--blue-soft:#eef6ff;
+      --shadow:0 10px 30px rgba(16,24,40,.06);--shadow-lg:0 28px 70px rgba(16,24,40,.14);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 80% -10%,rgba(91,92,240,.08),transparent 28rem),var(--canvas);-webkit-font-smoothing:antialiased}
+    button,input,select{font:inherit}
+    button{border:0;cursor:pointer}
+    [hidden]{display:none!important}
+
+    /* LOGIN */
+    .login{min-height:100vh;display:grid;grid-template-columns:1.12fr .88fr;background:#fff}
+    .login-visual{padding:48px 7vw;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 80% 18%,rgba(255,255,255,.14),transparent 18rem),radial-gradient(circle at 18% 82%,rgba(137,124,255,.34),transparent 22rem),linear-gradient(145deg,#16163a 0%,#38349d 48%,#6d64ef 100%);color:#fff;position:relative;overflow:hidden}
+    .login-visual:before{content:"";position:absolute;inset:24px;border:1px solid rgba(255,255,255,.1);border-radius:28px;pointer-events:none}
+    .login-visual:after{content:"";position:absolute;width:560px;height:560px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-210px;top:35px;box-shadow:0 0 0 70px rgba(255,255,255,.035),0 0 0 140px rgba(255,255,255,.025)}
+    .brand{display:flex;gap:12px;align-items:center;font-size:17px;font-weight:850;letter-spacing:-.7px;position:relative;z-index:1}
+    .brand-mark{width:42px;height:42px;border-radius:14px;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:900;box-shadow:0 14px 30px rgba(8,8,30,.22)}
+    .login-copy{max-width:570px;position:relative;z-index:1}
+    .eyebrow{font-size:11px;font-weight:850;letter-spacing:1.7px;text-transform:uppercase;color:#c8c5ff}
+    .login-copy h1{font-size:clamp(40px,4.5vw,68px);line-height:1.02;letter-spacing:-3px;margin:16px 0 20px}
+    .login-copy p{font-size:17px;line-height:1.7;color:rgba(255,255,255,.76);max-width:470px;margin:0}
+    .mini-stats{display:flex;gap:42px;font-size:12px;color:rgba(255,255,255,.65);position:relative;z-index:1}
+    .mini-stats b{font-size:22px;display:block;color:#fff;margin-bottom:4px;letter-spacing:-.8px}
+    .login-form{display:flex;justify-content:center;align-items:center;padding:34px;background:radial-gradient(circle at 100% 0%,rgba(91,92,240,.08),transparent 18rem),#fff}
+    .form-card{width:min(430px,100%);padding:36px;background:rgba(255,255,255,.9);border:1px solid rgba(230,234,240,.95);border-radius:24px;box-shadow:0 30px 70px rgba(16,24,40,.08);backdrop-filter:blur(18px)}
+    .form-card h2{font-size:32px;letter-spacing:-1.3px;margin:8px 0;color:#101828}
+    .form-card>p{color:var(--muted);line-height:1.6;font-size:14px;margin:0 0 28px}
+    .field{display:grid;gap:8px;margin:16px 0}
+    .field label{font-size:13px;font-weight:750;color:#344054}
+    .field input{height:54px;border:1px solid #d9dee8;border-radius:13px;padding:0 15px;outline:none;background:#fff;transition:.2s}
+    .field input:hover{border-color:#c5cada}
+    .field input:focus{border-color:var(--brand);box-shadow:0 0 0 4px rgba(91,92,240,.11)}
+    .primary{background:linear-gradient(135deg,var(--brand),#7067f4);color:#fff;height:52px;border-radius:13px;font-weight:800;width:100%;margin-top:10px;box-shadow:0 12px 30px rgba(91,92,240,.28);transition:.2s}
+    .primary:hover{transform:translateY(-2px);background:linear-gradient(135deg,var(--brand-dark),#6258e8)}
+    .hint{margin-top:18px;padding:12px 14px;border-radius:11px;border:1px solid #e4e5ff;background:linear-gradient(135deg,#f8f8ff,#f0f1ff);color:#5955a7;font-size:12px}
+
+    /* APP */
+    .app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}
+    .side{position:sticky;top:0;height:100vh;background:rgba(255,255,255,.94);border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;backdrop-filter:blur(18px);z-index:4}
+    .side .brand{padding:0 9px 30px;color:var(--ink)}
+    .side .brand-mark{background:linear-gradient(135deg,var(--brand),#7168ef);color:#fff;box-shadow:0 10px 24px rgba(91,92,240,.24)}
+    .nav{display:grid;gap:7px}
+    .nav button{position:relative;display:flex;align-items:center;gap:12px;min-height:46px;padding:10px 12px;background:transparent;color:#667085;text-align:left;border-radius:12px;font-size:13px;font-weight:750;transition:.2s}
+    .nav button:hover{color:#3738bd;background:#f7f7ff;transform:translateX(2px)}
+    .nav button.active{color:#3839c7;background:linear-gradient(90deg,#f0f1ff,#f8f8ff);box-shadow:inset 0 0 0 1px #e5e6ff}
+    .nav button.active:before{content:"";position:absolute;left:-6px;top:10px;bottom:10px;width:3px;border-radius:999px;background:var(--brand)}
+    .ico{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#f4f6fa;flex:0 0 29px;color:currentColor}
+    .ico svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .nav button.active .ico{background:#e5e6ff}
+    .side-bottom{margin-top:auto;padding:18px 9px 0;border-top:1px solid #edf0f5;display:flex;gap:10px;align-items:center}
+    .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ffbb78,#e77b9e);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:850;box-shadow:0 5px 14px rgba(180,98,130,.18)}
+    .who{font-size:11px;color:var(--muted)}
+    .who b{display:block;color:var(--ink);font-size:12px;margin-bottom:2px}
+
+    main{padding:34px 42px 48px;max-width:1600px;width:100%;margin:auto}
+    .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:20px}
+    .top h1{font-size:29px;letter-spacing:-1.3px;margin:0 0 5px;font-weight:850}
+    .top p{margin:0;color:#7a8498;font-size:13px}
+    .actions{display:flex;gap:10px;align-items:center}
+    .bell{width:44px;height:44px;border:1px solid #e3e7ef;background:#fff;border-radius:13px;display:grid;place-items:center;position:relative;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+    .bell svg{width:18px;height:18px;stroke:#667085;fill:none;stroke-width:1.8}
+    .bell:after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--red);top:8px;right:9px;border:2px solid #fff}
+    .new{height:44px;border-radius:13px;background:linear-gradient(135deg,var(--brand),#7067f4);color:#fff;padding:0 18px;font-weight:800;box-shadow:0 10px 25px rgba(91,92,240,.22);transition:.2s}
+    .new:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(91,92,240,.28)}
+    .dashboard{display:grid;gap:20px}
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+    .metric,.panel{background:rgba(255,255,255,.97);border:1px solid rgba(228,232,240,.95);border-radius:18px;box-shadow:0 1px 2px rgba(16,24,40,.035);transition:.2s}
+    .metric{position:relative;overflow:hidden;padding:21px}
+    .metric:hover,.panel:hover{border-color:#dce0ea;box-shadow:var(--shadow);transform:translateY(-1px)}
+    .metric:after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;right:-50px;top:-55px;background:rgba(91,92,240,.035)}
+    .metric-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:750}
+    .metric-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center}
+    .metric-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+    .purple{background:var(--brand-soft);color:var(--brand)}.blue{background:var(--blue-soft);color:var(--blue)}.orange{background:var(--amber-soft);color:var(--amber)}.pink{background:var(--red-soft);color:var(--red)}
+    .metric strong{display:block;font-size:28px;letter-spacing:-1.3px;margin:14px 0 7px;font-weight:850}
+    .trend{font-size:11px;color:var(--muted);line-height:1.5}.trend b{color:var(--green)}
+    .content-grid,.bottom-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+    .panel{padding:23px}
+    .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:16px}
+    .panel h3{margin:0;font-size:16px;letter-spacing:-.3px;font-weight:800}
+    .panel-head span{display:block;margin-top:4px;font-size:11px;color:#8992a6}
+    .select{border:1px solid #e1e5ec;border-radius:10px;background:#fff;padding:8px 10px;color:var(--muted);font-size:11px;outline:none}
+    .chart{height:235px;display:flex;align-items:flex-end;gap:17px;padding:20px 4px 0;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0,transparent 54px,rgba(226,230,238,.6) 55px)}
+    .bar-wrap{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:9px}
+    .bar{width:100%;max-width:44px;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,#9a8cff,#5b5cf0);min-height:16px;position:relative;box-shadow:0 8px 16px rgba(91,92,240,.14);transition:.2s}
+    .bar:hover{transform:translateY(-3px)}
+    .bar:hover:before{content:attr(data-value);position:absolute;top:-33px;left:50%;transform:translateX(-50%);background:#171b2f;color:#fff;padding:5px 8px;border-radius:7px;font-size:10px;white-space:nowrap}
+    .bar-wrap small{font-size:10px;color:var(--muted)}
+    .stock-list,.activity-list,.low-list{display:grid;gap:8px}
+    .stock{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:11px;padding:8px;border-radius:12px}
+    .stock:hover,.activity:hover{background:#fafbff}
+    .product-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#f8f9fc,#eef1f6);border:1px solid #edf0f5;font-size:19px}
+    .stock-name b,.activity b{font-size:12px;display:block}
+    .stock-name span,.activity span{font-size:10px;color:var(--muted)}
+    .progress{height:6px;background:#edf0f5;border-radius:6px;margin-top:8px;overflow:hidden}
+    .progress i{display:block;height:100%;background:linear-gradient(90deg,#766df3,var(--brand));border-radius:inherit}
+    .stock-qtd{font-size:12px;text-align:right;font-weight:800}.stock-qtd span{display:block;color:var(--muted);font-weight:500;font-size:9px}
+    .activity{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:8px;border-radius:12px}
+    .activity-ico{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:900}
+    .in{background:var(--green-soft);color:var(--green)}.out{background:var(--red-soft);color:var(--red)}
+    .movement{font-size:11px;font-weight:850}.movement.in,.movement.out{background:none}
+    .low{display:flex;justify-content:space-between;align-items:center;padding:13px 3px;border-bottom:1px solid var(--line);gap:12px}
+    .low:last-child{border:0}
+    .tag{font-size:9px;font-weight:850;border-radius:999px;padding:6px 9px}.critical{background:var(--red-soft);color:var(--red)}.attention{background:var(--amber-soft);color:#cb8200}
+    .link{font-size:11px;font-weight:800;color:#5556da;background:none;padding:0}.link:hover{text-decoration:underline}
+
+    /* VIEWS / TABLE */
+    .view{display:none}.view.show{display:block}
+    .table-panel{padding:0;overflow:auto}
+    .table-toolbar{padding:18px 20px;display:flex;gap:13px;justify-content:space-between;border-bottom:1px solid var(--line);background:#fff}
+    .search{width:340px;max-width:70%;height:42px;border:1px solid #e0e4ec;border-radius:11px;padding:0 13px;outline:none;background:#fafbfc}
+    .search:focus{background:#fff;border-color:var(--brand);box-shadow:0 0 0 4px rgba(91,92,240,.09)}
+    .filter{border:1px solid #e1e5ec;background:#fff;border-radius:10px;padding:0 13px;color:var(--muted);font-size:11px}
+    table{border-collapse:collapse;width:100%;font-size:12px}
+    th{text-align:left;background:#f8fafc;padding:14px 20px;color:#778196;font-size:10px;text-transform:uppercase;letter-spacing:.7px}
+    td{padding:16px 20px;border-top:1px solid #edf0f4}
+    tbody tr{transition:.18s}tbody tr:hover{background:#fafbff}
+    .status{font-size:10px;font-weight:800;padding:6px 10px;border-radius:20px;background:var(--green-soft);color:#159564}.status.low{background:var(--amber-soft);color:#c77a00}
+    .product-cell{display:flex;align-items:center;gap:10px}.product-cell .product-icon{width:32px;height:32px;font-size:14px;border-radius:9px}
+
+    /* MODAL */
+    .modal{display:none;position:fixed;inset:0;background:rgba(14,18,38,.56);z-index:20;place-items:center;padding:16px;backdrop-filter:blur(8px)}
+    .modal.open{display:grid}
+    .modal-card{width:min(500px,100%);background:#fff;border:1px solid rgba(255,255,255,.55);border-radius:22px;padding:27px;box-shadow:var(--shadow-lg);animation:modalIn .22s ease both}
+    .modal-title{display:flex;align-items:center;justify-content:space-between}.modal-title h2{font-size:22px;margin:0;font-weight:850}
+    .close{background:#f3f4fa;width:36px;height:36px;border-radius:11px;color:#68758c;font-size:20px}
+    .two-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+    @media(max-width:1100px){.app{grid-template-columns:230px minmax(0,1fr)}main{padding:30px 28px 40px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:820px){.app{grid-template-columns:78px minmax(0,1fr)}.side{padding:22px 10px}.side .brand{padding:0 0 28px;justify-content:center}.brand-name,.nav span:not(.ico),.side-bottom .who{display:none}.nav button{justify-content:center;padding:9px}.nav button.active:before{left:-4px}.side-bottom{justify-content:center}.content-grid,.bottom-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.login{grid-template-columns:1fr}.login-visual{min-height:330px;padding:30px}.login-visual:before{inset:14px}.login-copy h1{font-size:38px;letter-spacing:-2px}.mini-stats{gap:18px}.login-form{padding:28px 20px}.form-card{padding:0;border:0;box-shadow:none}.app{display:block}.side{position:sticky;top:0;height:64px;display:flex;flex-direction:row;padding:9px 10px;border-bottom:1px solid var(--line)}.side .brand{padding:0;flex:1;justify-content:flex-start}.brand-name{display:inline}.nav{display:flex;gap:2px}.nav button{padding:8px}.nav button:nth-child(n+5){display:none}.side-bottom{display:none}main{padding:22px 14px 34px}.top{align-items:flex-start}.top p{display:none}.top h1{font-size:24px}.new{font-size:0;width:44px;padding:0}.new:after{content:"+";font-size:20px}.metrics{grid-template-columns:1fr 1fr;gap:10px}.metric{padding:15px}.metric strong{font-size:23px}.panel{padding:17px}.chart{gap:7px}.table-toolbar{padding:13px}.search{width:100%;max-width:100%}.filter{display:none}th:nth-child(3),td:nth-child(3),th:nth-child(5),td:nth-child(5){display:none}.two-fields{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <section id="login" class="login"><aside class="login-visual"><div class="brand"><div class="brand-mark">E</div> <span>Estoque<span style="color:#c6c1ff">.io</span></span></div><div class="login-copy"><div class="eyebrow">Gestão inteligente</div><h1>Seu estoque, sempre em movimento.</h1><p>Uma visão clara do que entra, sai e precisa da sua atenção — em um único lugar.</p></div><div class="mini-stats"><div><b>99,9%</b>Confiabilidade</div><div><b>Tempo real</b>Dados atualizados</div></div></aside><main class="login-form"><form class="form-card" onsubmit="enter(event)"><div class="eyebrow" style="color:var(--brand)">Bem-vindo de volta</div><h2>Acesse sua operação</h2><p>Entre para acompanhar sua operação e tomar decisões com mais agilidade.</p><div class="field"><label for="user">E-mail ou usuário</label><input id="user" required placeholder="Digite seu usuário" value="admin"></div><div class="field"><label for="password">Senha</label><input id="password" required type="password" placeholder="Digite sua senha" value="admin"></div><button class="primary" type="submit">Entrar no painel →</button><div class="hint">Acesso de demonstração: <b>admin / admin</b></div></form></main></section>
-  <section id="app" class="app" hidden><aside class="side"><div class="brand"><div class="brand-mark">E</div><span class="brand-name">Estoque<span style="color:var(--brand)">.io</span></span></div><nav class="nav"><button class="active" onclick="switchView('dashboard',this)"><span class="ico">▦</span><span>Painel</span></button><button onclick="switchView('products',this)"><span class="ico">□</span><span>Produtos</span></button><button onclick="switchView('categories',this)"><span class="ico">◇</span><span>Categorias</span></button><button onclick="switchView('moves',this)"><span class="ico">↕</span><span>Movimentações</span></button><button onclick="switchView('reports',this)"><span class="ico">◫</span><span>Relatórios</span></button></nav><div class="side-bottom"><div class="avatar">SG</div><div class="who"><b>Sheyla Gomes</b>Administradora</div></div></aside><main><header class="top"><div><h1 id="page-title">Visão geral</h1><p id="page-sub">Terça-feira, 4 de agosto de 2026</p></div><div class="actions"><button class="bell" aria-label="Notificações">♧</button><button class="new" onclick="openModal()">+ Novo produto</button></div></header>
-    <section id="dashboard" class="view show"><div class="dashboard"><div class="metrics"><article class="metric"><div class="metric-top">Produtos ativos <span class="metric-icon purple">□</span></div><strong>248</strong><div class="trend"><b>+12,5%</b> vs. mês anterior</div></article><article class="metric"><div class="metric-top">Itens em estoque <span class="metric-icon blue">▤</span></div><strong>1.842</strong><div class="trend"><b>+8,2%</b> vs. mês anterior</div></article><article class="metric"><div class="metric-top">Valor em estoque <span class="metric-icon orange">◈</span></div><strong>R$ 34,7k</strong><div class="trend"><b>+5,4%</b> vs. mês anterior</div></article><article class="metric"><div class="metric-top">Atenção necessária <span class="metric-icon pink">!</span></div><strong>08</strong><div class="trend"><b style="color:var(--red)">3 críticos</b> em estoque mínimo</div></article></div><div class="content-grid"><article class="panel"><div class="panel-head"><div><h3>Movimentação de estoque</h3><span>Entradas e saídas nos últimos 7 dias</span></div><select class="select"><option>Últimos 7 dias</option></select></div><div class="chart"><div class="bar-wrap"><div class="bar" style="height:42%" data-value="R$ 3.240"></div><small>Seg</small></div><div class="bar-wrap"><div class="bar" style="height:65%" data-value="R$ 5.180"></div><small>Ter</small></div><div class="bar-wrap"><div class="bar" style="height:48%" data-value="R$ 3.960"></div><small>Qua</small></div><div class="bar-wrap"><div class="bar" style="height:78%" data-value="R$ 6.440"></div><small>Qui</small></div><div class="bar-wrap"><div class="bar" style="height:57%" data-value="R$ 4.720"></div><small>Sex</small></div><div class="bar-wrap"><div class="bar" style="height:93%" data-value="R$ 7.680"></div><small>Sáb</small></div><div class="bar-wrap"><div class="bar" style="height:68%" data-value="R$ 5.360"></div><small>Dom</small></div></div></article><article class="panel"><div class="panel-head"><div><h3>Mais movimentados</h3><span>Por quantidade no mês</span></div><button class="link" onclick="switchView('products',document.querySelectorAll('.nav button')[1])">Ver todos</button></div><div class="stock-list"><div class="stock"><div class="product-icon">💻</div><div class="stock-name"><b>Notebook Dell XPS</b><span>Informática</span><div class="progress"><i style="width:82%"></i></div></div><div class="stock-qtd">128<span>unidades</span></div></div><div class="stock"><div class="product-icon">🖱️</div><div class="stock-name"><b>Mouse sem fio</b><span>Periféricos</span><div class="progress"><i style="width:64%"></i></div></div><div class="stock-qtd">96<span>unidades</span></div></div><div class="stock"><div class="product-icon">⌨️</div><div class="stock-name"><b>Teclado mecânico</b><span>Periféricos</span><div class="progress"><i style="width:45%"></i></div></div><div class="stock-qtd">74<span>unidades</span></div></div></div></article></div><div class="bottom-grid"><article class="panel"><div class="panel-head"><div><h3>Atividade recente</h3><span>Últimas movimentações registradas</span></div><button class="link" onclick="switchView('moves',document.querySelectorAll('.nav button')[3])">Ver histórico</button></div><div class="activity-list"><div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada de mercadoria</b><span>40 un. de Mouse sem fio · Hoje, 11:32</span></div><div class="movement in">+40 un.</div></div><div class="activity"><div class="activity-ico out">↑</div><div><b>Saída para pedido #1048</b><span>2 un. de Notebook Dell XPS · Hoje, 09:15</span></div><div class="movement out">−2 un.</div></div><div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada de mercadoria</b><span>15 un. de Teclado mecânico · Ontem, 16:40</span></div><div class="movement in">+15 un.</div></div></div></article><article class="panel"><div class="panel-head"><div><h3>Estoque baixo</h3><span>Produtos que precisam de reposição</span></div><button class="link">Ver todos</button></div><div class="low-list"><div class="low"><div><b style="font-size:13px">Headset Bluetooth</b><span style="display:block;color:var(--muted);font-size:11px;margin-top:3px">4 de 15 unidades mínimas</span></div><span class="tag critical">Crítico</span></div><div class="low"><div><b style="font-size:13px">Cabo USB-C</b><span style="display:block;color:var(--muted);font-size:11px;margin-top:3px">12 de 20 unidades mínimas</span></div><span class="tag attention">Atenção</span></div></div></article></div></div></section>
-    <section id="products" class="view"><article class="panel table-panel"><div class="table-toolbar"><input class="search" placeholder="Buscar produtos..." oninput="filterRows(this.value)"><button class="filter">Filtros ▾</button></div><table><thead><tr><th>Produto</th><th>Categoria</th><th>Estoque</th><th>Preço unitário</th><th>Status</th></tr></thead><tbody id="productRows"><tr><td><div class="product-cell"><div class="product-icon">💻</div><b>Notebook Dell XPS</b></div></td><td>Informática</td><td>128 un.</td><td>R$ 5.499,00</td><td><span class="status">Disponível</span></td></tr><tr><td><div class="product-cell"><div class="product-icon">🖱️</div><b>Mouse sem fio</b></div></td><td>Periféricos</td><td>96 un.</td><td>R$ 129,90</td><td><span class="status">Disponível</span></td></tr><tr><td><div class="product-cell"><div class="product-icon">🎧</div><b>Headset Bluetooth</b></div></td><td>Áudio</td><td>4 un.</td><td>R$ 249,90</td><td><span class="status low">Estoque baixo</span></td></tr><tr><td><div class="product-cell"><div class="product-icon">⌨️</div><b>Teclado mecânico</b></div></td><td>Periféricos</td><td>74 un.</td><td>R$ 349,90</td><td><span class="status">Disponível</span></td></tr></tbody></table></article></section>
-    <section id="categories" class="view"><div class="metrics"><article class="metric"><div class="metric-top">Informática <span class="metric-icon purple">▣</span></div><strong>82</strong><div class="trend">produtos cadastrados</div></article><article class="metric"><div class="metric-top">Periféricos <span class="metric-icon blue">◉</span></div><strong>64</strong><div class="trend">produtos cadastrados</div></article><article class="metric"><div class="metric-top">Áudio <span class="metric-icon orange">◌</span></div><strong>37</strong><div class="trend">produtos cadastrados</div></article></div></section>
-    <section id="moves" class="view"><article class="panel"><div class="panel-head"><div><h3>Histórico de movimentações</h3><span>Entradas e saídas recentes</span></div><button class="new" onclick="openModal('move')">+ Registrar movimentação</button></div><div class="activity-list"><div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada · Mouse sem fio</b><span>Fornecedor Tech Supply · Hoje, 11:32</span></div><div class="movement in">+40 un.</div></div><div class="activity"><div class="activity-ico out">↑</div><div><b>Saída · Notebook Dell XPS</b><span>Pedido #1048 · Hoje, 09:15</span></div><div class="movement out">−2 un.</div></div><div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada · Teclado mecânico</b><span>Fornecedor KeyMax · Ontem, 16:40</span></div><div class="movement in">+15 un.</div></div></div></article></section>
-    <section id="reports" class="view"><div class="content-grid"><article class="panel"><div class="panel-head"><div><h3>Resumo financeiro</h3><span>Visão de estoque por categoria</span></div></div><div class="chart"><div class="bar-wrap"><div class="bar" style="height:90%" data-value="R$ 18.240"></div><small>Informática</small></div><div class="bar-wrap"><div class="bar" style="height:62%;background:linear-gradient(180deg,#55cfb0,#17a976)" data-value="R$ 10.930"></div><small>Periféricos</small></div><div class="bar-wrap"><div class="bar" style="height:38%;background:linear-gradient(180deg,#ffa962,#f27e40)" data-value="R$ 5.574"></div><small>Áudio</small></div></div></article><article class="panel"><h3>Relatórios disponíveis</h3><div class="low-list" style="margin-top:14px"><div class="low"><b style="font-size:13px">Posição de estoque</b><button class="link">Exportar</button></div><div class="low"><b style="font-size:13px">Produtos abaixo do mínimo</b><button class="link">Exportar</button></div><div class="low"><b style="font-size:13px">Histórico de movimentações</b><button class="link">Exportar</button></div></div></article></div></section>
-  </main></section><div class="modal" id="modal"><form class="modal-card" onsubmit="addProduct(event)"><div class="modal-title"><h2 id="modal-heading">Novo produto</h2><button type="button" class="close" onclick="closeModal()">×</button></div><div class="field"><label>Nome do produto</label><input id="newName" required placeholder="Ex.: Monitor ultrawide"></div><div class="two-fields"><div class="field"><label>Categoria</label><input required placeholder="Categoria"></div><div class="field"><label>Quantidade</label><input required type="number" min="0" placeholder="0"></div></div><div class="two-fields"><div class="field"><label>Preço unitário</label><input required placeholder="R$ 0,00"></div><div class="field"><label>Estoque mínimo</label><input required type="number" min="0" placeholder="0"></div></div><button class="primary" type="submit">Salvar produto</button></form></div>
+  <section id="login" class="login">
+    <aside class="login-visual">
+      <div class="brand"><div class="brand-mark">E</div><span>Estoque<span style="color:#cbc8ff">.io</span></span></div>
+      <div class="login-copy">
+        <div class="eyebrow">Gestão inteligente</div>
+        <h1>Seu estoque, sempre em movimento.</h1>
+        <p>Uma operação mais clara, rápida e organizada. Acompanhe entradas, saídas, indicadores e alertas em um único lugar.</p>
+      </div>
+      <div class="mini-stats"><div><b>99,9%</b>Confiabilidade</div><div><b>Tempo real</b>Dados atualizados</div><div><b>360°</b>Visão da operação</div></div>
+    </aside>
+    <main class="login-form">
+      <form class="form-card" onsubmit="enter(event)">
+        <div class="eyebrow" style="color:var(--brand)">Bem-vindo de volta</div>
+        <h2>Acesse sua operação</h2>
+        <p>Entre para acompanhar sua operação e tomar decisões com mais agilidade.</p>
+        <div class="field"><label for="user">E-mail ou usuário</label><input id="user" required placeholder="Digite seu usuário" value="admin"></div>
+        <div class="field"><label for="password">Senha</label><input id="password" required type="password" placeholder="Digite sua senha" value="admin"></div>
+        <button class="primary" type="submit">Entrar no painel →</button>
+        <div class="hint">Acesso de demonstração: <b>admin / admin</b></div>
+      </form>
+    </main>
+  </section>
+
+  <section id="app" class="app" hidden>
+    <aside class="side">
+      <div class="brand"><div class="brand-mark">E</div><span class="brand-name">Estoque<span style="color:var(--brand)">.io</span></span></div>
+      <nav class="nav">
+        <button class="active" onclick="switchView('dashboard',this)"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span><span>Painel</span></button>
+        <button onclick="switchView('products',this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg></span><span>Produtos</span></button>
+        <button onclick="switchView('categories',this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="m4 4 7 0 2 3h7v13H4z"/></svg></span><span>Categorias</span></button>
+        <button onclick="switchView('moves',this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 4v15m0 0-3-3m3 3 3-3M17 20V5m0 0-3 3m3-3 3 3"/></svg></span><span>Movimentações</span></button>
+        <button onclick="switchView('reports',this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10m6 10V4m6 16v-7m4 7V7"/></svg></span><span>Relatórios</span></button>
+      </nav>
+      <div class="side-bottom"><div class="avatar">SG</div><div class="who"><b>Sheila Gomes</b>Administrador</div></div>
+    </aside>
+
+    <main>
+      <header class="top">
+        <div><h1 id="page-title">Visão geral</h1><p id="page-sub">Terça-feira, 18 de agosto de 2026</p></div>
+        <div class="actions">
+          <button class="bell" aria-label="Notificações"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>
+          <button class="new" onclick="openModal('product')">+ Novo produto</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view show">
+        <div class="dashboard">
+          <div class="metrics">
+            <article class="metric"><div class="metric-top">Produtos ativos <span class="metric-icon purple"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/></svg></span></div><strong>248</strong><div class="trend"><b>+12,5%</b> vs. mês anterior</div></article>
+            <article class="metric"><div class="metric-top">Itens em estoque <span class="metric-icon blue"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM8 9h8M8 13h8M8 17h5"/></svg></span></div><strong>1.842</strong><div class="trend"><b>+8,2%</b> vs. mês anterior</div></article>
+            <article class="metric"><div class="metric-top">Valor em estoque <span class="metric-icon orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.5c.5-1 1.6-1.5 2.8-1.5 1.7 0 3 1 3 2.3 0 3-6 1.4-6 4 0 1.3 1.3 2.3 3 2.3 1.2 0 2.3-.5 2.8-1.5M12 6.5v11"/></svg></span></div><strong>R$ 34,7k</strong><div class="trend"><b>+5,4%</b> vs. mês anterior</div></article>
+            <article class="metric"><div class="metric-top">Atenção necessária <span class="metric-icon pink"><svg viewBox="0 0 24 24"><path d="M12 4 3 20h18z"/><path d="M12 9v5m0 3v.1"/></svg></span></div><strong>08</strong><div class="trend"><b style="color:var(--red)">3 críticos</b> em estoque mínimo</div></article>
+          </div>
+
+          <div class="content-grid">
+            <article class="panel">
+              <div class="panel-head"><div><h3>Movimentação de estoque</h3><span>Entradas e saídas nos últimos 7 dias</span></div><select class="select"><option>Últimos 7 dias</option></select></div>
+              <div class="chart">
+                <div class="bar-wrap"><div class="bar" style="height:42%" data-value="R$ 3.240"></div><small>Seg</small></div>
+                <div class="bar-wrap"><div class="bar" style="height:65%" data-value="R$ 5.180"></div><small>Ter</small></div>
+                <div class="bar-wrap"><div class="bar" style="height:48%" data-value="R$ 3.960"></div><small>Qua</small></div>
+                <div class="bar-wrap"><div class="bar" style="height:78%" data-value="R$ 6.440"></div><small>Qui</small></div>
+                <div class="bar-wrap"><div class="bar" style="height:57%" data-value="R$ 4.720"></div><small>Sex</small></div>
+                <div class="bar-wrap"><div class="bar" style="height:93%" data-value="R$ 7.680"></div><small>Sáb</small></div>
+                <div class="bar-wrap"><div class="bar" style="height:68%" data-value="R$ 5.360"></div><small>Dom</small></div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><h3>Mais movimentados</h3><span>Por quantidade no mês</span></div><button class="link" onclick="switchView('products',document.querySelectorAll('.nav button')[1])">Ver todos</button></div>
+              <div class="stock-list">
+                <div class="stock"><div class="product-icon">💻</div><div class="stock-name"><b>Notebook Dell XPS</b><span>Informática</span><div class="progress"><i style="width:82%"></i></div></div><div class="stock-qtd">128<span>unidades</span></div></div>
+                <div class="stock"><div class="product-icon">🖱️</div><div class="stock-name"><b>Mouse sem fio</b><span>Periféricos</span><div class="progress"><i style="width:64%"></i></div></div><div class="stock-qtd">96<span>unidades</span></div></div>
+                <div class="stock"><div class="product-icon">⌨️</div><div class="stock-name"><b>Teclado mecânico</b><span>Periféricos</span><div class="progress"><i style="width:45%"></i></div></div><div class="stock-qtd">74<span>unidades</span></div></div>
+              </div>
+            </article>
+          </div>
+
+          <div class="bottom-grid">
+            <article class="panel">
+              <div class="panel-head"><div><h3>Atividade recente</h3><span>Últimas movimentações registradas</span></div><button class="link" onclick="switchView('moves',document.querySelectorAll('.nav button')[3])">Ver histórico</button></div>
+              <div class="activity-list">
+                <div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada de mercadoria</b><span>40 un. de Mouse sem fio · Hoje, 11:32</span></div><div class="movement in">+40 un.</div></div>
+                <div class="activity"><div class="activity-ico out">↑</div><div><b>Saída para pedido #1048</b><span>2 un. de Notebook Dell XPS · Hoje, 09:15</span></div><div class="movement out">−2 un.</div></div>
+                <div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada de mercadoria</b><span>15 un. de Teclado mecânico · Ontem, 16:40</span></div><div class="movement in">+15 un.</div></div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-head"><div><h3>Estoque baixo</h3><span>Produtos que precisam de reposição</span></div><button class="link">Ver todos</button></div>
+              <div class="low-list">
+                <div class="low"><div><b style="font-size:12px">Headset Bluetooth</b><span style="display:block;color:var(--muted);font-size:10px;margin-top:3px">4 de 15 unidades mínimas</span></div><span class="tag critical">Crítico</span></div>
+                <div class="low"><div><b style="font-size:12px">Cabo USB-C</b><span style="display:block;color:var(--muted);font-size:10px;margin-top:3px">12 de 20 unidades mínimas</span></div><span class="tag attention">Atenção</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="view">
+        <article class="panel table-panel">
+          <div class="table-toolbar"><input class="search" placeholder="Buscar produtos..." oninput="filterRows(this.value)"><button class="filter">Filtros ▾</button></div>
+          <table>
+            <thead><tr><th>Produto</th><th>Categoria</th><th>Estoque</th><th>Preço unitário</th><th>Status</th></tr></thead>
+            <tbody id="productRows">
+              <tr><td><div class="product-cell"><div class="product-icon">💻</div><b>Notebook Dell XPS</b></div></td><td>Informática</td><td>128 un.</td><td>R$ 5.499,00</td><td><span class="status">Disponível</span></td></tr>
+              <tr><td><div class="product-cell"><div class="product-icon">🖱️</div><b>Mouse sem fio</b></div></td><td>Periféricos</td><td>96 un.</td><td>R$ 129,90</td><td><span class="status">Disponível</span></td></tr>
+              <tr><td><div class="product-cell"><div class="product-icon">🎧</div><b>Headset Bluetooth</b></div></td><td>Áudio</td><td>4 un.</td><td>R$ 249,90</td><td><span class="status low">Estoque baixo</span></td></tr>
+              <tr><td><div class="product-cell"><div class="product-icon">⌨️</div><b>Teclado mecânico</b></div></td><td>Periféricos</td><td>74 un.</td><td>R$ 349,90</td><td><span class="status">Disponível</span></td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section id="categories" class="view">
+        <div class="metrics">
+          <article class="metric"><div class="metric-top">Informática <span class="metric-icon purple">💻</span></div><strong>82</strong><div class="trend">produtos cadastrados</div></article>
+          <article class="metric"><div class="metric-top">Periféricos <span class="metric-icon blue">⌨️</span></div><strong>64</strong><div class="trend">produtos cadastrados</div></article>
+          <article class="metric"><div class="metric-top">Áudio <span class="metric-icon orange">🎧</span></div><strong>37</strong><div class="trend">produtos cadastrados</div></article>
+        </div>
+      </section>
+
+      <section id="moves" class="view">
+        <article class="panel">
+          <div class="panel-head"><div><h3>Histórico de movimentações</h3><span>Entradas e saídas recentes</span></div><button class="new" onclick="openModal('move')">+ Registrar movimentação</button></div>
+          <div class="activity-list">
+            <div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada · Mouse sem fio</b><span>Fornecedor Tech Supply · Hoje, 11:32</span></div><div class="movement in">+40 un.</div></div>
+            <div class="activity"><div class="activity-ico out">↑</div><div><b>Saída · Notebook Dell XPS</b><span>Pedido #1048 · Hoje, 09:15</span></div><div class="movement out">−2 un.</div></div>
+            <div class="activity"><div class="activity-ico in">↓</div><div><b>Entrada · Teclado mecânico</b><span>Fornecedor KeyMax · Ontem, 16:40</span></div><div class="movement in">+15 un.</div></div>
+          </div>
+        </article>
+      </section>
+
+      <section id="reports" class="view">
+        <div class="content-grid">
+          <article class="panel"><div class="panel-head"><div><h3>Resumo financeiro</h3><span>Visão de estoque por categoria</span></div></div><div class="chart"><div class="bar-wrap"><div class="bar" style="height:90%" data-value="R$ 18.240"></div><small>Informática</small></div><div class="bar-wrap"><div class="bar" style="height:62%;background:linear-gradient(180deg,#6fd9ba,#17a976)" data-value="R$ 10.930"></div><small>Periféricos</small></div><div class="bar-wrap"><div class="bar" style="height:38%;background:linear-gradient(180deg,#ffc270,#f08d36)" data-value="R$ 5.574"></div><small>Áudio</small></div></div></article>
+          <article class="panel"><h3>Relatórios disponíveis</h3><div class="low-list" style="margin-top:14px"><div class="low"><b style="font-size:12px">Posição de estoque</b><button class="link">Exportar</button></div><div class="low"><b style="font-size:12px">Produtos abaixo do mínimo</b><button class="link">Exportar</button></div><div class="low"><b style="font-size:12px">Histórico de movimentações</b><button class="link">Exportar</button></div></div></article>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <div class="modal" id="modal">
+    <form class="modal-card" onsubmit="addProduct(event)">
+      <div class="modal-title"><h2 id="modal-heading">Novo produto</h2><button type="button" class="close" onclick="closeModal()">×</button></div>
+      <div class="field"><label>Nome do produto</label><input id="newName" required placeholder="Ex.: Monitor ultrawide"></div>
+      <div class="two-fields"><div class="field"><label>Categoria</label><input required placeholder="Categoria"></div><div class="field"><label>Quantidade</label><input required type="number" min="0" placeholder="0"></div></div>
+      <div class="two-fields"><div class="field"><label>Preço unitário</label><input required placeholder="R$ 0,00"></div><div class="field"><label>Estoque mínimo</label><input required type="number" min="0" placeholder="0"></div></div>
+      <button class="primary" type="submit">Salvar</button>
+    </form>
+  </div>
+
   <script>
-    const labels={dashboard:['Visão geral','Terça-feira, 4 de agosto de 2026'],products:['Produtos','Gerencie seu catálogo e níveis de estoque'],categories:['Categorias','Organize seus produtos por grupos'],moves:['Movimentações','Acompanhe todas as entradas e saídas'],reports:['Relatórios','Indicadores para decisões mais assertivas']};
+    const labels={
+      dashboard:['Visão geral','Terça-feira, 18 de agosto de 2026'],
+      products:['Produtos','Gerencie seu catálogo e níveis de estoque'],
+      categories:['Categorias','Organize seus produtos por grupos'],
+      moves:['Movimentações','Acompanhe todas as entradas e saídas'],
+      reports:['Relatórios','Indicadores para decisões mais assertivas']
+    };
     function enter(e){e.preventDefault();document.querySelector('#login').hidden=true;document.querySelector('#app').hidden=false}
-    function switchView(id,btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));document.querySelector('#'+id).classList.add('show');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelector('#page-title').textContent=labels[id][0];document.querySelector('#page-sub').textContent=labels[id][1];document.querySelector('.new').style.display=id==='products'||id==='dashboard'?'block':'none'}
-    function openModal(mode){document.querySelector('#modal-heading').textContent=mode==='move'?'Registrar movimentação':'Novo produto';document.querySelector('#modal').classList.add('open')}
+    function switchView(id,btn){
+      document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+      document.querySelector('#'+id).classList.add('show');
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector('#page-title').textContent=labels[id][0];
+      document.querySelector('#page-sub').textContent=labels[id][1];
+      document.querySelector('header .new').style.display=id==='products'||id==='dashboard'?'block':'none';
+    }
+    function openModal(mode){
+      document.querySelector('#modal-heading').textContent=mode==='move'?'Registrar movimentação':'Novo produto';
+      document.querySelector('#modal').classList.add('open');
+    }
     function closeModal(){document.querySelector('#modal').classList.remove('open')}
-    function addProduct(e){e.preventDefault();const name=document.querySelector('#newName').value;const row=document.createElement('tr');row.innerHTML=`<td><div class="product-cell"><div class="product-icon">📦</div><b>${name}</b></div></td><td>Novo cadastro</td><td>0 un.</td><td>R$ 0,00</td><td><span class="status low">Sem estoque</span></td>`;document.querySelector('#productRows').prepend(row);closeModal();e.target.reset();switchView('products',document.querySelectorAll('.nav button')[1])}
+    function addProduct(e){
+      e.preventDefault();
+      const name=document.querySelector('#newName').value;
+      const row=document.createElement('tr');
+      row.innerHTML=`<td><div class="product-cell"><div class="product-icon">📦</div><b>${name}</b></div></td><td>Novo cadastro</td><td>0 un.</td><td>R$ 0,00</td><td><span class="status low">Sem estoque</span></td>`;
+      document.querySelector('#productRows').prepend(row);
+      closeModal();e.target.reset();
+      switchView('products',document.querySelectorAll('.nav button')[1]);
+    }
     function filterRows(q){document.querySelectorAll('#productRows tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q.toLowerCase())?'':'none')}
+    document.querySelector('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
   </script>
-</body></html>
+</body>
+</html>
